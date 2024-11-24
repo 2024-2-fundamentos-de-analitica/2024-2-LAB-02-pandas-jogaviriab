@@ -20,3 +20,9 @@ def pregunta_04():
     E    4.785714
     Name: c2, dtype: float64
     """
+    import pandas as pd
+
+    truck_events = pd.read_csv('files/input/tbl0.tsv', sep='\t')
+    
+    result = truck_events.groupby('c1')['c2'].mean()
+    return result

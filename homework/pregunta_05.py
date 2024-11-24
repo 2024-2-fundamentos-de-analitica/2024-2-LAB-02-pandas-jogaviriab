@@ -20,3 +20,9 @@ def pregunta_05():
     E    9
     Name: c2, dtype: int64
     """
+    import pandas as pd
+
+    truck_events = pd.read_csv('files/input/tbl0.tsv', sep='\t')
+
+    result = truck_events.groupby('c1')['c2'].max()
+    return result

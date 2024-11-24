@@ -14,3 +14,9 @@ def pregunta_01():
     40
 
     """
+    import pandas as pd
+
+    truck_events = pd.read_csv('files/input/tbl0.tsv', sep='\t')
+
+    return len(truck_events)
+

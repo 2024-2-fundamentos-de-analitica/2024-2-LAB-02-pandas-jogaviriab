@@ -5,8 +5,23 @@ datos requeridos se encuentran en los archivos `tbl0.tsv`, `tbl1.tsv` y
 librerias de pandas para resolver las preguntas.
 """
 
+import pandas as pd
+
+def corregir_fecha(fecha):
+    try:
+        # Intentar convertir la fecha a formato datetime
+        return pd.to_datetime(fecha)
+    except ValueError:
+        # Si hay un error, verificar si es un 29 de febrero no válido
+        if '-02-29' in fecha:
+            # Cambiar el 29 de febrero a 28 de febrero
+            return pd.to_datetime(fecha.replace('-02-29', '-02-28'))
+        else:
+            # Devolver NaT si no es una fecha válida y no es el caso especial
+            return pd.NaT
 
 def pregunta_09():
+    
     """
     Agregue el año como una columna al dataframe que contiene el archivo
     `tbl0.tsv`.
@@ -23,3 +38,19 @@ def pregunta_09():
     39  39  E   5  1998-01-26  1998
 
     """
+    # Leer el archivo `tbl0.tsv`
+    df = pd.read_csv('files/input/tbl0.tsv', sep='\t')
+    
+    # Corregir fechas usando la función personalizada y extraer el año
+    df['c3_corregida'] = df['c3'].apply(corregir_fecha)
+    df['year'] = df['c3_corregida'].dt.year.astype(str)
+    
+    # Eliminar la columna auxiliar si no la necesitas
+    df = df.drop(columns=['c3_corregida'])
+    
+    # Mostrar el DataFrame con la nueva columna 'year'
+    return df
+
+# Llamar a la función y mostrar el resultado
+print(pregunta_09())
+
